@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0, viewport-fit=cover">
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+body {
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    background: #f3f6fa;
+    color: #172033;
+    -webkit-text-size-adjust: 100%;
+}
+
+header {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e9ef;
+    padding: 18px 22px;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 800;
+    color: #175cd3;
+}
+
+.logo span {
+    color: #111827;
+}
+
+.container {
+    width: min(520px, calc(100% - 30px));
+    margin: 28px auto;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 26px;
+    box-shadow: 0 10px 35px rgba(20, 40, 80, .08);
+}
+
+.step {
+    display: none;
+}
+
+.step.active {
+    display: block;
+}
+
+.badge {
+    display: inline-block;
+    background: #fff1f2;
+    color: #be123c;
+    border-radius: 999px;
+    padding: 5px 9px;
+    font-size: 11px;
+    font-weight: 800;
+    margin-bottom: 14px;
+}
+
+h1 {
+    font-size: 26px;
+    line-height: 1.2;
+    margin: 0 0 12px;
+}
+
+.description {
+    color: #667085;
+    line-height: 1.55;
+    margin: 0 0 24px;
+}
+
+.robot-box {
+    border: 1px solid #d9dee7;
+    border-radius: 14px;
+    padding: 22px;
+    background: #fafbfc;
+}
+
+.calculation {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 800;
+    margin: 20px 0;
+}
+
+/*
+    CHAMP DE RÉPONSE
+
+    Aucun focus forcé par JavaScript.
+    C'est important pour Safari/iOS.
+*/
+.answer-input {
+    display: block;
+    width: 100%;
+    height: 54px;
+
+    padding: 12px 15px;
+
+    border: 2px solid #cbd5e1;
+    border-radius: 11px;
+
+    background: #ffffff;
+    color: #111827;
+
+    font-family: inherit;
+    font-size: 20px;
+    line-height: 28px;
+
+    outline: none;
+
+    margin: 0 0 14px;
+
+    caret-color: #175cd3;
+
+    /*
+       Permet la sélection et l'édition
+       normales sur écran tactile.
+    */
+    -webkit-user-select: text;
+    user-select: text;
+
+    /*
+       Empêche certains comportements
+       de sélection étranges sur iOS.
+    */
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.answer-input:focus {
+    border-color: #175cd3;
+    box-shadow: 0 0 0 3px rgba(23,92,211,.15);
+}
+
+.answer-input::placeholder {
+    color: #98a2b3;
+    opacity: 1;
+}
+
+.normal-input {
+    display: block;
+    width: 100%;
+    height: 52px;
+
+    padding: 12px 15px;
+
+    border: 2px solid #cbd5e1;
+    border-radius: 10px;
+
+    background: #ffffff;
+    color: #111827;
+
+    font-family: inherit;
+    font-size: 17px;
+
+    outline: none;
+
+    margin-bottom: 14px;
+
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.normal-input:focus {
+    border-color: #175cd3;
+    box-shadow: 0 0 0 3px rgba(23,92,211,.12);
+}
+
+button {
+    display: block;
+    width: 100%;
+    min-height: 52px;
+
+    border: 0;
+    border-radius: 10px;
+
+    background: #175cd3;
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:active {
+    opacity: .85;
+}
+
+.secondary {
+    background: #eef4ff;
+    color: #175cd3;
+}
+
+.error {
+    display: none;
+
+    color: #b42318;
+    background: #fef3f2;
+
+    padding: 11px;
+    border-radius: 9px;
+
+    margin-bottom: 14px;
+
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.tracking {
+    background: #f8fafc;
+    border-radius: 12px;
+
+    padding: 17px;
+    margin: 20px 0;
+
+    line-height: 1.5;
+}
+
+.tracking strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.options {
+    display: grid;
+    gap: 12px;
+}
+
+.option {
+    border: 1px solid #d9dee7;
+    border-radius: 13px;
+
+    padding: 18px;
+
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+.option:active {
+    background: #f8fbff;
+}
+
+.option-title {
+    font-size: 17px;
+    font-weight: 750;
+}
+
+.option-price {
+    color: #175cd3;
+    font-size: 21px;
+    font-weight: 800;
+
+    margin: 5px 0;
+}
+
+.option-description {
+    color: #667085;
+    font-size: 14px;
+}
+
+.payment-methods {
+    display: grid;
+    gap: 10px;
+}
+
+.demo-warning {
+    background: #fff7e6;
+    border: 1px solid #ffd666;
+
+    color: #7a4e00;
+
+    padding: 13px;
+    border-radius: 10px;
+
+    font-size: 13px;
+    line-height: 1.45;
+
+    margin-bottom: 20px;
+}
+
+.date {
+    color: #175cd3;
+    font-size: 20px;
+    font-weight: 800;
+
+    margin: 12px 0 25px;
+}
+
+.success {
+    text-align: center;
+}
+
+.success-icon {
+    width: 65px;
+    height: 65px;
+
+    border-radius: 50%;
+
+    background: #dcfae6;
+    color: #087443;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 20px;
+
+    font-size: 32px;
+    font-weight: 800;
+}
+
+footer {
+    text-align: center;
+
+    padding: 20px;
+
+    color: #98a2b3;
+
+    font-size: 12px;
+}
+
+@media (max-width: 500px) {
+
+    .container {
+        margin: 20px auto;
+    }
+
+    .card {
+        padding: 22px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    .calculation {
+        font-size: 28px;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<header>
+    <div class="logo">
+        mondial<span> relais</span>
+    </div>
+</header>
+
+
+<main class="container">
+
+
+<!-- =====================================================
+     ÉTAPE 1 — VÉRIFICATION
+===================================================== -->
+
+<section
+    class="card step active"
+    id="step1">
+
+    <span class="badge">
+    </span>
+
+    <h1>
+        Vérification de sécurité
+    </h1>
+
+    <p class="description">
+        Pour continuer, veuillez confirmer que vous n'êtes pas un robot.
+    </p>
+
+    <div class="robot-box">
+
+        <div>
+            Résolvez le calcul suivant :
+        </div>
+
+        <div
+            class="calculation"
+            id="calculation">
+            …
+        </div>
+
+        <!--
+            IMPORTANT :
+            Aucun JavaScript ne force le focus ici.
+            Safari peut donc gérer normalement
+            le clavier virtuel et le curseur.
+        -->
+        <input
+            id="answer"
+            class="answer-input"
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            enterkeyhint="done"
+            placeholder="Tapez votre réponse"
+            aria-label="Réponse au calcul"
+        >
+
+        <div
+            class="error"
+            id="robotError">
+            Réponse incorrecte. Un nouveau calcul a été généré.
+        </div>
+
+        <button
+            type="button"
+            id="verifyButton">
+            Continuer
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ÉTAPE 2 — RECHERCHE
+===================================================== -->
+
+<section
+    class="card step"
+    id="step2">
+
+    <h1>
+        Suivre mon colis
+    </h1>
+
+    <p class="description">
+        Renseignez les informations de votre envoi 
+    </p>
+
+    <input
+        id="trackingNumber"
+        class="normal-input"
+        type="text"
+        autocomplete="off"
+        placeholder="Numéro de colis"
+    >
+
+    <input
+        id="phone"
+        class="normal-input"
+        type="tel"
+        autocomplete="off"
+        inputmode="tel"
+        placeholder="Numéro de téléphone"
+    >
+
+    <div
+        class="error"
+        id="trackingError">
+        Veuillez renseigner les deux champs.
+    </div>
+
+    <button
+        type="button"
+        id="findButton">
+        Rechercher mon colis
+    </button>
+
+</section>
+
+
+<!-- =====================================================
+     ÉTAPE 3 — COLIS TROUVÉ
+===================================================== -->
+
+<section
+    class="card step"
+    id="step3">
+
+    <span class="badge">
+        votre colis
+    </span>
+
+    <h1>
+        Colis retrouvé
+    </h1>
+
+    <div class="tracking">
+
+        <strong>
+            Numéro de colis
+        </strong>
+
+        <span id="displayTracking">
+            —
+        </span>
+
+        <br>
+
+        <strong>
+            Statut
+        </strong>
+
+        <span>
+            Livraison en attente de reprogrammation
+        </span>
+
+    </div>
+
+    <p class="description">
+        Choisissez une option de livraison.
+    </p>
+
+    <div class="options">
+
+        <div
+            class="option"
+            data-price="1">
+
+            <div class="option-title">
+                Livraison standard
+            </div>
+
+            <div class="option-price">
+                1 €
+            </div>
+
+            <div class="option-description">
+                Livraison estimée sous environ 7 jours.
+            </div>
+
+        </div>
+
+
+        <div
+            class="option"
+            data-price="5">
+
+            <div class="option-title">
+                Livraison express
+            </div>
+
+            <div class="option-price">
+                5 €
+            </div>
+
+            <div class="option-description">
+                Livraison estimée sous environ 2 jours.
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ÉTAPE 4 — PAIEMENT
+===================================================== -->
+
+<section
+    class="card step"
+    id="step4">
+
+    <span class="badge">
+        PAIEMENT
+    </span>
+
+    <h1>
+        Reprogrammation
+    </h1>
+
+    <p class="description">
+        Montant :
+        <strong id="paymentAmount">
+            1 €
+        </strong>
+    </p>
+
+        <br>
+
+    </div>
+
+    <div class="payment-methods">
+
+        <button
+            type="button"
+            id="cardButton">
+             Carte bancaire
+        </button>
+
+        <button
+            type="button"
+            class="secondary"
+            id="paypalButton">
+            PayPal
+        </button>
+
+        <button
+            type="button"
+            class="secondary"
+            id="appleButton">
+            Apple Pay
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ÉTAPE 5 — CARTE DE DÉMO
+===================================================== -->
+
+<section
+    class="card step"
+    id="step5">
+
+    <h1>
+        Paiement par carte
+    </h1>
+
+       <br>
+
+    </div>
+
+    <input
+        class="normal-input"
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        placeholder="Numéro"
+    >
+
+    <input
+        class="normal-input"
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        placeholder="MM / AA"
+    >
+
+    <input
+        class="normal-input"
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        placeholder="CVV fictif"
+    >
+
+    <button
+        type="button"
+        id="finishCardButton">
+        valider
+    </button>
+
+</section>
+
+
+<!-- =====================================================
+     ÉTAPE 6 — PORTEFEUILLE DÉMO
+===================================================== -->
+
+<section
+    class="card step"
+    id="step6">
+
+    <span class="badge">
+    </span>
+
+    <h1 id="walletName">
+        Portefeuille
+    </h1>
+
+        <br>
+
+    </div>
+
+    <input
+        class="normal-input"
+        type="text"
+        autocomplete="off"
+        placeholder="Identifiant"
+    >
+
+    <input
+        class="normal-input"
+        type="password"
+        autocomplete="off"
+        placeholder="Mot de passe"
+    >
+
+    <button
+        type="button"
+        id="finishWalletButton">
+        Continuer
+    </button>
+
+</section>
+
+
+<!-- =====================================================
+     ÉTAPE 7 — FIN
+===================================================== -->
+
+<section
+    class="card step"
+    id="step7">
+
+    <div class="success">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <span class="badge">
+            c'est terminer
+        </span>
+
+        <h1>
+            Livraison reprogrammée
+        </h1>
+
+        <p class="description">
+            au revoir
+        </p>
+
+        <div class="tracking">
+
+            <strong>
+                Colis
+            </strong>
+
+            <span id="finalTracking">
+                j'ai un autre colos a reprogramée
+            </span>
+
+            <br><br>
+
+            <strong>
+                Nouvelle date estimée
+            </strong>
+
+            <div
+                class="date"
+                id="deliveryDate">
+                j'a
+            </div>
+
+        </div>
+
+        <button
+            type="button"
+            class="secondary"
+            onclick="location.reload()">
+        </button>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<footer>
+    ©mondial relais 2026
+</footer>
+
+
+<script>
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let correctAnswer = 0;
+let selectedPrice = 1;
+let trackingNumber = "";
+
+
+/* =====================================================
+   GÉNÉRATION DU CALCUL
+===================================================== */
+
+function generateCalculation() {
+
+    const a =
+        Math.floor(Math.random() * 9) + 1;
+
+    const b =
+        Math.floor(Math.random() * 9) + 1;
+
+    const operation =
+        Math.floor(Math.random() * 3);
+
+    let text;
+    let answer;
+
+
+    if (operation === 0) {
+
+        text =
+            a + " + " + b + " = ?";
+
+        answer =
+            a + b;
+
+    }
+
+    else if (operation === 1) {
+
+        const biggest =
+            Math.max(a, b);
+
+        const smallest =
+            Math.min(a, b);
+
+        text =
+            biggest + " − " + smallest + " = ?";
+
+        answer =
+            biggest - smallest;
+
+    }
+
+    else {
+
+        text =
+            a + " × " + b + " = ?";
+
+        answer =
+            a * b;
+
+    }
+
+
+    correctAnswer =
+        answer;
+
+    document
+        .getElementById("calculation")
+        .textContent =
+        text;
+}
+
+
+/* =====================================================
+   CHANGEMENT D'ÉTAPE
+===================================================== */
+
+function showStep(number) {
+
+    document
+        .querySelectorAll(".step")
+        .forEach(function(step) {
+
+            step.classList.remove("active");
+
+        });
+
+
+    const target =
+        document.getElementById(
+            "step" + number
+        );
+
+
+    if (target) {
+
+        target.classList.add("active");
+
+    }
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* =====================================================
+   VÉRIFICATION DU CALCUL
+===================================================== */
+
+function verifyRobot() {
+
+    const input =
+        document.getElementById("answer");
+
+    const error =
+        document.getElementById("robotError");
+
+
+    const value =
+        input.value.trim();
+
+
+    const answer =
+        Number(value);
+
+
+    if (
+        value !== "" &&
+        Number.isFinite(answer) &&
+        answer === correctAnswer
+    ) {
+
+        error.style.display =
+            "none";
+
+        showStep(2);
+
+    }
+
+    else {
+
+        error.style.display =
+            "block";
+
+        input.value = "";
+
+        generateCalculation();
+
+        /*
+         * PAS de input.focus() ici.
+         *
+         * Cela laisse iOS/Safari gérer
+         * naturellement le clavier.
+         */
+    }
+}
+
+
+/* =====================================================
+   RECHERCHE DU COLIS
+===================================================== */
+
+function findPackage() {
+
+    const number =
+        document
+        .getElementById("trackingNumber")
+        .value
+        .trim();
+
+
+    const phone =
+        document
+        .getElementById("phone")
+        .value
+        .trim();
+
+
+    const error =
+        document
+        .getElementById("trackingError");
+
+
+    if (
+        number === "" ||
+        phone === ""
+    ) {
+
+        error.style.display =
+            "block";
+
+        return;
+    }
+
+
+    error.style.display =
+        "none";
+
+
+    trackingNumber =
+        number;
+
+
+    document
+        .getElementById("displayTracking")
+        .textContent =
+        trackingNumber;
+
+
+    showStep(3);
+}
+
+
+/* =====================================================
+   CHOIX DE LIVRAISON
+===================================================== */
+
+function chooseDelivery(price) {
+
+    selectedPrice =
+        price;
+
+
+    document
+        .getElementById("paymentAmount")
+        .textContent =
+        price + " €";
+
+
+    showStep(4);
+}
+
+
+/* =====================================================
+   PAIEMENT SIMULÉ
+===================================================== */
+
+function finishPayment() {
+
+    document
+        .getElementById("finalTracking")
+        .textContent =
+        trackingNumber;
+
+
+    const date =
+        new Date();
+
+
+    const days =
+        selectedPrice === 5
+            ? 2
+            : 7;
+
+
+    date.setDate(
+        date.getDate() + days
+    );
+
+
+    const formatted =
+        date.toLocaleDateString(
+            "fr-FR",
+            {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            }
+        );
+
+
+    document
+        .getElementById("deliveryDate")
+        .textContent =
+        formatted;
+
+
+    showStep(7);
+}
+
+
+/* =====================================================
+   INITIALISATION
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+
+        /* Calcul initial */
+
+        generateCalculation();
+
+
+        /* Bouton calcul */
+
+        document
+            .getElementById("verifyButton")
+            .addEventListener(
+                "click",
+                verifyRobot
+            );
+
+
+        /*
+         * Entrée sur le clavier.
+         *
+         * Pas de focus forcé.
+         */
+
+        document
+            .getElementById("answer")
+            .addEventListener(
+                "keydown",
+                function(event) {
+
+                    if (
+                        event.key === "Enter"
+                    ) {
+
+                        event.preventDefault();
+
+                        verifyRobot();
+
+                    }
+
+                }
+            );
+
+
+        /* Recherche */
+
+        document
+            .getElementById("findButton")
+            .addEventListener(
+                "click",
+                findPackage
+            );
+
+
+        /* Livraison */
+
+        document
+            .querySelectorAll(".option")
+            .forEach(function(option) {
+
+                option.addEventListener(
+                    "click",
+                    function() {
+
+                        chooseDelivery(
+                            Number(
+                                option.dataset.price
+                            )
+                        );
+
+                    }
+                );
+
+            });
+
+
+        /* Carte */
+
+        document
+            .getElementById("cardButton")
+            .addEventListener(
+                "click",
+                function() {
+
+                    showStep(5);
+
+                }
+            );
+
+
+        /* PayPal démo */
+
+        document
+            .getElementById("paypalButton")
+            .addEventListener(
+                "click",
+                function() {
+
+                    document
+                        .getElementById("walletName")
+                        .textContent =
+                        "PayPal";
+
+                    showStep(6);
+
+                }
+            );
+
+
+        /* Apple Pay démo */
+
+        document
+            .getElementById("appleButton")
+            .addEventListener(
+                "click",
+                function() {
+
+                    document
+                        .getElementById("walletName")
+                        .textContent =
+                        "Apple Pay";
+
+                    showStep(6);
+
+                }
+            );
+
+
+        /* Fin carte */
+
+        document
+            .getElementById("finishCardButton")
+            .addEventListener(
+                "click",
+                finishPayment
+            );
+
+
+        /* Fin portefeuille */
+
+        document
+            .getElementById("finishWalletButton")
+            .addEventListener(
+                "click",
+                finishPayment
+            );
+
+    }
+);
+
+</script>
+
+</body>
+</html>
